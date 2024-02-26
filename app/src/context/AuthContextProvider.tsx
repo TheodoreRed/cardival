@@ -23,7 +23,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
           setAccount(res);
         } else {
           // Create them an account
-          const newAccount = {
+          const newAccount: Account = {
             uid: user.uid,
             displayName: user.displayName ?? "",
             photoURL: user.photoURL ?? "",

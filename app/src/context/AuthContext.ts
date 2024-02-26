@@ -1,6 +1,6 @@
 import { User } from "firebase/auth";
 import { createContext } from "react";
-import Account from "../models/Account";
+import Account from "../models/Account/Account";
 
 export interface AuthContextModel {
   user: User | null; // null when not logged in; data from google
