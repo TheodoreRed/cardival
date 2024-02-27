@@ -1,4 +1,4 @@
-import FlashcardSet from "../Flashcard/FlashcardSet";
+import CardSet from "../Card/CardSet";
 
 export default interface Account {
   _id?: string;
@@ -6,5 +6,5 @@ export default interface Account {
   displayName: string;
   photoURL: string;
   email: string;
-  flashcardSets: FlashcardSet[];
+  cardSets: CardSet[];
 }

@@ -1,10 +1,11 @@
 import express from "express";
 import { getMongoClient } from "../db";
 import Account from "../models/Account/Account";
+import CardSetRouter from "./CardRouter";
 
 const router = express.Router();
 
-const errorResponse = (error: any, res: any) => {
+export const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
@@ -40,5 +41,7 @@ router.post("/accounts", async (req, res) => {
     errorResponse(err, res);
   }
 });
+
+router.use("/accounts/:_id/card-sets", CardSetRouter);
 
 export default router;

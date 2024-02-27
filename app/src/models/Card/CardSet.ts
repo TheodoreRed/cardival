@@ -1,7 +1,7 @@
-import Flashcard from "./Flashcard";
+import Card from "./Card";
 
 export default interface FlashcardSet {
   title: string;
   description?: string;
-  flashcards: Flashcard[];
+  cards: Card[];
 }

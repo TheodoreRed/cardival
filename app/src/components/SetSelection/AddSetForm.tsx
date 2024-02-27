@@ -1,25 +1,58 @@
-import { useState, FC, FormEvent } from "react";
-import FlashcardSet from "../../models/Flashcard/FlashcardSet";
+import { useState, FormEvent, useContext } from "react";
+import AuthContext from "../../context/AuthContext";
+import { getAccountByUid } from "../../services/accountApi";
+import CardSet from "../../models/Card/CardSet";
+import { createNewCardSet } from "../../services/cardApi";
 
-const AddSetForm: FC = () => {
+interface Props {
+  setDisplayModal: (b: boolean) => void;
+}
+
+const AddSetForm = ({ setDisplayModal }: Props) => {
+  const { account, setAccount } = useContext(AuthContext);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
+  const [isDuplicate, setIsDuplicate] = useState(false);
 
-  const isBtnDisabled = title === "" || description === "";
+  const isBtnDisabled = title === "" || isDuplicate;
 
-  const submithandler = (e: FormEvent) => {
+  const checkForDuplicateTitle = (newTitle: string) => {
+    if (account) {
+      const duplicate = account?.cardSets.some((set) => set.title === newTitle);
+      setIsDuplicate(duplicate);
+      setError(duplicate ? "This title name already exists!" : "");
+    }
+  };
+
+  const submithandler = async (e: FormEvent) => {
     e.preventDefault();
-    const newFlashcardSet: FlashcardSet = {
-      title,
-      description,
-      flashcards: [],
-    };
+
+    if (account && account._id) {
+      const newCardSet: CardSet = {
+        title,
+        description,
+        cards: [],
+      };
+
+      await createNewCardSet(account._id, newCardSet);
+      const updatedAccount = await getAccountByUid(account.uid);
+      if (updatedAccount) {
+        setAccount(updatedAccount);
+        setDisplayModal(false);
+      } else {
+        throw new Error("Error creating new set");
+      }
+    }
+
+    setDescription("");
   };
 
   return (
-    <form className="flex flex-col items-center p-10">
-      <label className="text-3xl" htmlFor="title" onSubmit={submithandler}>
-        Add a Title
+    <form className="flex flex-col items-center p-10" onSubmit={submithandler}>
+      <label className="text-3xl" htmlFor="title">
+        Add a Title<span className="pl-2 text-red-400">*</span>
       </label>
       <input
         type="text"
@@ -28,7 +61,10 @@ const AddSetForm: FC = () => {
         placeholder="Title name"
         className="w-5/6 p-5 mx-10 my-5 rounded-md bg-slate-100"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => {
+          setTitle(e.target.value);
+          checkForDuplicateTitle(e.target.value);
+        }}
       />
       {title && (
         <>
@@ -39,7 +75,7 @@ const AddSetForm: FC = () => {
             rows={5}
             id="description"
             name="description"
-            placeholder="Add a description"
+            placeholder="Add a description (optional)"
             className="w-5/6 p-5 mx-10 my-5 rounded-md resize-none bg-slate-100"
             value={description}
             draggable={false}
@@ -56,6 +92,9 @@ const AddSetForm: FC = () => {
       >
         Add
       </button>
+      <p className="absolute text-xl text-red-700 bottom-10 right-10">
+        {error}
+      </p>
     </form>
   );
 };

@@ -28,7 +28,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
             displayName: user.displayName ?? "",
             photoURL: user.photoURL ?? "",
             email: user.email ?? "",
-            flashcardSets: [],
+            cardSets: [],
           };
 
           setAccount(await createNewAccount(newAccount));

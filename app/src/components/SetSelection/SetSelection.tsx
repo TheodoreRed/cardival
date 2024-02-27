@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import Modal from "../Common/Modal";
 import AddSetForm from "./AddSetForm";
+import SingleCardSet from "./SingleCardSet";
+import { Link } from "react-router-dom";
 
 const SetSelection = () => {
   const [displayModal, setDisplayModal] = useState(false);
@@ -12,17 +14,29 @@ const SetSelection = () => {
   }
 
   return (
-    <div className="flex flex-col items-center h-screen bg-googleBlue">
+    <div className="flex flex-col items-center min-h-screen bg-googleBlue">
       <h2
         style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)" }}
-        className="px-10 py-5 my-10 text-4xl rounded-full shadow-lg bg-slate-200 w-fit "
+        className="w-5/6 px-10 py-5 my-10 text-4xl text-center rounded-full shadow-lg bg-slate-300"
       >
-        <span className="text-gray-800 ">Add or choose a set</span>
+        <span className="text-gray-800 ">
+          <span
+            onClick={() => setDisplayModal(true)}
+            className="text-blue-600 duration-300 ease-in-out cursor-pointer hover:text-blue-400"
+          >
+            Add
+          </span>{" "}
+          or choose a set
+        </span>
       </h2>
       {
-        <ul>
-          {account.flashcardSets.map((cardSet) => {
-            return <li key={cardSet.title}>{cardSet.title}</li>;
+        <ul className="w-5/6">
+          {account.cardSets.map((cardSet) => {
+            return (
+              <Link key={cardSet.title} to={`/dashboard/${cardSet.title}`}>
+                <SingleCardSet cardSet={cardSet} />
+              </Link>
+            );
           })}
         </ul>
       }
@@ -33,7 +47,7 @@ const SetSelection = () => {
         +
       </button>
       <Modal isOpen={displayModal} onClose={() => setDisplayModal(false)}>
-        <AddSetForm />
+        <AddSetForm setDisplayModal={setDisplayModal} />
       </Modal>
     </div>
   );

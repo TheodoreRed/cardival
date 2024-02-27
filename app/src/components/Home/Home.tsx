@@ -7,11 +7,12 @@ const Home = () => {
   const { account } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {}, [account]);
+  useEffect(() => {
+    if (account) {
+      navigate("/card-sets");
+    }
+  }, [account]);
 
-  if (account) {
-    navigate("/flashcard-sets");
-  }
   return (
     <div className="h-screen overflow-hidden bg-center bg-no-repeat bg-cover bg-mobile-landing md:bg-desktop-landing">
       <h1 className="p-5 text-center text-black text-7xl font-julius">
