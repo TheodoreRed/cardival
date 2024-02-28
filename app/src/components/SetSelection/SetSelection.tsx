@@ -14,10 +14,10 @@ const SetSelection = () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-googleBlue">
+    <div className="flex flex-col items-center min-h-screen bg-googleBlue font-julius">
       <h2
         style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)" }}
-        className="w-5/6 px-10 py-5 my-10 text-4xl text-center rounded-full shadow-lg bg-slate-300"
+        className="px-10 py-5 my-10 text-4xl text-center rounded-full shadow-lg w-fit bg-slate-300"
       >
         <span className="text-gray-800 ">
           <span
@@ -33,7 +33,10 @@ const SetSelection = () => {
         <ul className="w-5/6">
           {account.cardSets.map((cardSet) => {
             return (
-              <Link key={cardSet.title} to={`/dashboard/${cardSet.title}`}>
+              <Link
+                key={cardSet.title}
+                to={`/${account.uid}/dashboard/${cardSet.title}`}
+              >
                 <SingleCardSet cardSet={cardSet} />
               </Link>
             );

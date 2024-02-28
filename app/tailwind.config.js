@@ -15,6 +15,7 @@ export default {
       }),
       colors: {
         googleBlue: '#4285F4',
+        brightYellow: "#FFEB3B"
       }
     },
   },

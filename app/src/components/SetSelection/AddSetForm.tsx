@@ -13,7 +13,7 @@ const AddSetForm = ({ setDisplayModal }: Props) => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [isDuplicate, setIsDuplicate] = useState(false);
 
   const isBtnDisabled = title === "" || isDuplicate;
@@ -22,7 +22,11 @@ const AddSetForm = ({ setDisplayModal }: Props) => {
     if (account) {
       const duplicate = account?.cardSets.some((set) => set.title === newTitle);
       setIsDuplicate(duplicate);
-      setError(duplicate ? "This title name already exists!" : "");
+      setErrorMsg(
+        duplicate
+          ? "Title Already in Use: Please Choose a Different Name for Your Set"
+          : ""
+      );
     }
   };
 
@@ -52,13 +56,13 @@ const AddSetForm = ({ setDisplayModal }: Props) => {
   return (
     <form className="flex flex-col items-center p-10" onSubmit={submithandler}>
       <label className="text-3xl" htmlFor="title">
-        Add a Title<span className="pl-2 text-red-400">*</span>
+        Name Your Set<span className="pl-2 text-red-400">*</span>
       </label>
       <input
         type="text"
         id="title"
         name="title"
-        placeholder="Title name"
+        placeholder="Enter Set Title (e.g., 'History', 'Calculus')"
         className="w-5/6 p-5 mx-10 my-5 rounded-md bg-slate-100"
         value={title}
         onChange={(e) => {
@@ -69,14 +73,14 @@ const AddSetForm = ({ setDisplayModal }: Props) => {
       {title && (
         <>
           <label htmlFor="description" className="text-3xl">
-            Add a Description
+            Describe Your Set
           </label>
           <textarea
             rows={5}
             id="description"
             name="description"
             placeholder="Add a description (optional)"
-            className="w-5/6 p-5 mx-10 my-5 rounded-md resize-none bg-slate-100"
+            className="w-5/6 p-5 mx-10 my-5 font-sans text-xl font-light rounded-md resize-none bg-slate-100"
             value={description}
             draggable={false}
             onChange={(e) => setDescription(e.target.value)}
@@ -84,16 +88,16 @@ const AddSetForm = ({ setDisplayModal }: Props) => {
         </>
       )}
       <button
-        className={`w-5/6 py-5 bg-blue-200   rounded-md ${
+        className={`w-5/6 py-5 bg-blue-200 duration-300 rounded-md ${
           !isBtnDisabled &&
-          "bg-blue-400 text-white hover:bg-gradient-to-r from-blue-500 via-blue-300 hover:text-black hover:font-bold to-blue-500"
+          " bg-blue-400 text-white hover:bg-gradient-to-r from-blue-500 via-blue-300 hover:text-black hover:font-bold to-blue-500 duration-300"
         }`}
         disabled={isBtnDisabled}
       >
-        Add
+        Create Set
       </button>
-      <p className="absolute text-xl text-red-700 bottom-10 right-10">
-        {error}
+      <p className="absolute w-1/2 text-xl text-red-700 bottom-5 right-10">
+        {errorMsg}
       </p>
     </form>
   );

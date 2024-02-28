@@ -1,4 +1,4 @@
-export default interface Flashcard {
+export default interface Card {
   question: string;
   answer: string;
 }
