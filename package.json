@@ -1,0 +1,17 @@
+{
+  "name": "cardival",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd app && npm run dev\" \"cd server/functions && npm run serve\"",
+    "dev:watch": "concurrently \"cd app && npm run dev\" \"cd server/functions && npm run serve:dev\"",
+    "test": "concurrently \"cd app && npm test\" \" cd server/functions && npm test\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

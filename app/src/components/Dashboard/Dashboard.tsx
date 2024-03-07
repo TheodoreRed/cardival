@@ -1,28 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
-import { getAccountByUid } from "../../services/accountApi";
+import { useParams } from "react-router-dom";
 import CardSet from "../../models/Card/CardSet";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faGear } from "@fortawesome/free-solid-svg-icons";
-import { navigateHome, navigateToCardSets } from "../../utils/dashboardUtils";
+import AuthContext from "../../context/AuthContext";
+import EditSet from "./EditSet";
+import Card from "../../models/Card/Card";
+import NavigationIcons from "./NavigationIcons";
+import EmptyCardDeckMsg from "./EmptyCardDeckMsg";
+import ViewSet from "./ViewSet";
 
 const Dashboard = () => {
-  const { userid, cardsetid } = useParams();
-  const navigate = useNavigate();
-  const { account, setAccount } = useContext(AuthContext);
+  // https://chat.openai.com/c/64ff96d9-db18-4bc2-bc38-7b153255a0a8
+  const { cardsetid } = useParams();
+
+  const { account } = useContext(AuthContext);
+
   const [activeSet, setActiveSet] = useState<CardSet | null>(null);
-
-  useEffect(() => {
-    const fetchAccountData = async () => {
-      if (!account) {
-        const response = await getAccountByUid(userid as string);
-        if (response) setAccount(response);
-      }
-    };
-
-    fetchAccountData();
-  }, [userid, account, setAccount]);
+  const [cards, setCards] = useState<Card[]>(activeSet?.cards ?? []);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     if (account && cardsetid) {
@@ -38,34 +32,67 @@ const Dashboard = () => {
   }, [account, cardsetid]);
 
   useEffect(() => {
-    if (!account) {
-      navigateHome(navigate);
+    if (activeSet) {
+      setCards(activeSet.cards);
     }
-  }, [account, navigate]);
+  }, [activeSet, isEditing]);
+
+  const isCardDeckEmpty = (): boolean => {
+    if (!account || !cardsetid) {
+      return true;
+    }
+    const foundSet = account.cardSets.find((set) => set.title === cardsetid);
+    if (!foundSet) {
+      return true;
+    }
+
+    return foundSet.cards.length === 0;
+  };
+
+  if (!account || !activeSet || !cards) {
+    return <p>Account is loading!</p>;
+  }
 
   return (
-    <div className="min-h-screen bg-googleBlue">
+    <div className={`${isEditing ? "h-full" : "h-screen"} bg-googleBlue`}>
       <div className="relative">
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-          className="absolute text-white duration-300 cursor-pointer text-l top-5 left-5 hover:text-black"
-          onClick={() => navigateToCardSets(navigate)}
-        />
-        <h2 className="p-8 text-5xl text-center text-white bg-blue-600 font-julius">
+        <h2 className="p-8 px-16 text-4xl text-center text-white bg-blue-600 font-julius">
           {cardsetid}
         </h2>
-        <FontAwesomeIcon
-          icon={faGear}
-          className="absolute text-3xl text-white duration-300 cursor-pointer top-10 right-5 hover:text-black"
-        />
+        <NavigationIcons />
       </div>
+
       <div className="relative">
-        <button className="absolute px-4 py-2 text-xl font-semibold text-black duration-300 ease-in-out border rounded-lg shadow-lg top-7 right-10 bg-brightYellow hover:bg-yellow-500 hover:border-transparent hover:shadow-xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-brightYellow focus:ring-opacity-50 font-julius">
-          Edit Set
-        </button>
+        <ToggleEdit />
+        {isEditing && (
+          <EditSet
+            cards={cards}
+            setCards={setCards}
+            cardSetTitle={activeSet.title}
+            setIsEditing={setIsEditing}
+          />
+        )}
       </div>
+      {!isEditing && !isCardDeckEmpty() && <ViewSet cards={cards} />}
+      {!isEditing && isCardDeckEmpty() && <EmptyCardDeckMsg />}
     </div>
   );
+
+  function ToggleEdit() {
+    return (
+      <button
+        onClick={() => {
+          console.log("Clicked");
+          setIsEditing((prev) => !prev);
+        }}
+        className={`absolute px-4 py-2 font-semibold text-black duration-300 ease-in-out rounded-lg shadow-lg text-l top-5 right-5 bg-brightYellow hover:shadow-xl hover:translate-y-1 focus:outline-none focus:ring-2 focus:ring-brightYellow focus:ring-opacity-50 font-julius ${
+          isEditing && "bg-red-700 text-white"
+        }`}
+      >
+        {isEditing ? "Cancel" : "Edit Set"}
+      </button>
+    );
+  }
 };
 
 export default Dashboard;

@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/card-sets" element={<SetSelection />} />
-        <Route path="/:userid/dashboard/:cardsetid" element={<Dashboard />} />
+        <Route path="/:cardsetid" element={<Dashboard />} />
       </Routes>
     </Router>
   );
