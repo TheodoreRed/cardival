@@ -40,7 +40,7 @@ describe("AddSetForm with TypeScript", () => {
     render(<AddSetForm setDisplayModal={jest.fn()} />);
   });
 
-  it("disables SubmitButton when either title is empty or there is a duplicate", () => {
+  it("disables SubmitButton when title is empty", () => {
     const component = render(<AddSetForm setDisplayModal={jest.fn()} />);
     const submitButton = component.getByTestId(
       "submitButton"
@@ -81,20 +81,13 @@ describe("AddSetForm with TypeScript", () => {
     const mockDisplayModal = jest.fn();
     const component = render(<AddSetForm setDisplayModal={mockDisplayModal} />);
 
-    // Fill in the title input
     const titleInput = component.getByTestId("titleInput");
     await userEvent.type(titleInput, "valid title");
 
-    // Select the form using its test ID and submit it
     const form = component.getByTestId("formElement");
-    fireEvent.submit(form); // This directly triggers form submission
+    fireEvent.submit(form);
 
-    // Alternatively, if userEvent.submit is not available or you prefer fireEvent:
-    // fireEvent.submit(form);
-
-    // Wait for expectations to ensure async actions have completed
     await waitFor(() => {
-      // Verify that the submitHandler mock function was called
       expect(mockSubmitHandler).toHaveBeenCalled();
     });
   });
