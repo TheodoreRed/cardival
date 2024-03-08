@@ -14,5 +14,4 @@ app.use(
 app.use(express.json());
 
 app.use("/", accountRouter);
-
 export const api = functions.https.onRequest(app);

@@ -53,6 +53,8 @@ const Dashboard = () => {
     return <p>Account is loading!</p>;
   }
 
+  const isQuizBtnDisabled = (): boolean => activeSet.cards.length < 5;
+
   return (
     <div className={`${isEditing ? "h-full" : "h-screen"} bg-googleBlue`}>
       <div className="relative">
@@ -63,6 +65,7 @@ const Dashboard = () => {
       </div>
 
       <div className="relative">
+        <GoToQuiz />
         <ToggleEdit />
         {isEditing && (
           <EditSet
@@ -90,6 +93,20 @@ const Dashboard = () => {
         }`}
       >
         {isEditing ? "Cancel" : "Edit Set"}
+      </button>
+    );
+  }
+
+  function GoToQuiz() {
+    return (
+      <button
+        onClick={() => {
+          console.log("Go to Quiz component endpoint");
+        }}
+        className={`absolute px-4 py-2 font-semibold text-black duration-300 ease-in-out rounded-lg shadow-lg text-l top-5 left-5 bg-green-500 hover:bg-green-400 hover:text-white hover:shadow-xl hover:-translate-y-1 font-julius`}
+        disabled={isQuizBtnDisabled()}
+      >
+        Quiz
       </button>
     );
   }
