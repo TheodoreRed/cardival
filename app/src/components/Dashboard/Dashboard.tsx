@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CardSet from "../../models/Card/CardSet";
 import AuthContext from "../../context/AuthContext";
 import EditSet from "./EditSet";
 import Card from "../../models/Card/Card";
-import NavigationIcons from "./NavigationIcons";
 import EmptyCardDeckMsg from "./EmptyCardDeckMsg";
 import ViewSet from "./ViewSet";
+import Header from "../Common/Header/Header";
 
 const Dashboard = () => {
   // https://chat.openai.com/c/64ff96d9-db18-4bc2-bc38-7b153255a0a8
@@ -57,15 +57,10 @@ const Dashboard = () => {
 
   return (
     <div className={`${isEditing ? "h-full" : "h-screen"} bg-googleBlue`}>
-      <div className="relative">
-        <h2 className="p-8 px-16 text-4xl text-center text-white bg-blue-600 font-julius">
-          {cardsetid}
-        </h2>
-        <NavigationIcons />
-      </div>
+      <Header />
 
       <div className="relative">
-        <GoToQuiz />
+        {!isEditing && <GoToQuiz />}
         <ToggleEdit />
         {isEditing && (
           <EditSet
@@ -99,15 +94,15 @@ const Dashboard = () => {
 
   function GoToQuiz() {
     return (
-      <button
-        onClick={() => {
-          console.log("Go to Quiz component endpoint");
-        }}
-        className={`absolute px-4 py-2 font-semibold text-black duration-300 ease-in-out rounded-lg shadow-lg text-l top-5 left-5 bg-green-500 hover:bg-green-400 hover:text-white hover:shadow-xl hover:-translate-y-1 font-julius`}
-        disabled={isQuizBtnDisabled()}
-      >
-        Quiz
-      </button>
+      <Link to={`/${cardsetid}/quiz`}>
+        <button
+          onClick={() => {}}
+          className={`absolute px-4 py-2 font-semibold text-black duration-300 ease-in-out rounded-lg shadow-lg text-l top-5 left-5 bg-green-500 hover:bg-green-400 hover:text-white hover:shadow-xl hover:-translate-y-1 font-julius`}
+          disabled={isQuizBtnDisabled()}
+        >
+          Quiz
+        </button>
+      </Link>
     );
   }
 };

@@ -18,6 +18,29 @@ export const createNewCardSet = async (
   ).data;
 };
 
+export const replaceCardSet = async (
+  _id: string,
+  activeSetTitle: string,
+  newSet: CardSet
+) => {
+  try {
+    const response = await axios.put(
+      `${baseUrl}/accounts/${encodeURIComponent(
+        _id
+      )}/card-sets/${encodeURIComponent(activeSetTitle)}/replace`,
+      newSet
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error updating card set cards:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
 /**
  * Updates the cards of a specific card set within an account.
  * @param accountId The ID of the account containing the card set.

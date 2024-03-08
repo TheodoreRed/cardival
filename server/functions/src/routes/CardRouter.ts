@@ -39,7 +39,38 @@ cardSetRouter.post("/", async (req, res) => {
   }
 });
 
-// PATCH endpoint to update a card set's cards within an account
+// Repalce a card set to an account
+// PATCH endpoint to replace a card set within an account
+cardSetRouter.put("/:activeSetId/replace", async (req, res) => {
+  const { _id, activeSetId } = req.params as RouteParams;
+  const newCardSet = req.body as CardSet;
+  console.log(newCardSet);
+
+  try {
+    const client = await getMongoClient();
+    const accountsCollection = client.db().collection<Account>("accounts");
+
+    // Locate the account and card set to update
+    const result = await accountsCollection.updateOne(
+      { _id: new ObjectId(_id), "cardSets.title": activeSetId },
+      { $set: { "cardSets.$": newCardSet } }
+    );
+
+    if (result.modifiedCount === 1) {
+      const updatedAccount = await accountsCollection.findOne({
+        _id: new ObjectId(_id),
+      });
+      res.status(200).json(updatedAccount);
+    } else {
+      res.status(404).json({ message: "Card set not found." });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred." });
+  }
+});
+
+// PATCH endpoint to update a card set's cards within an account.
 cardSetRouter.patch("/:activeSetId/cards", async (req, res) => {
   const { _id, activeSetId } = req.params as RouteParams;
   const newCards: Card[] = req.body.cards;

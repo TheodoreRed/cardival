@@ -107,7 +107,7 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
             key={card.id}
             className="relative flex flex-col items-center pb-10 mb-5 bg-slate-600"
           >
-            <p className="absolute top-0 left-0 w-5 text-center bg-blue-200 text-md rounded-br-md md:text-2xl">
+            <p className="absolute left-0 w-5 text-2xl text-center text-white -translate-y-1/2 top-1/2 md:translate-x-1/2 md:text-5xl">
               {index + 1}
             </p>
             <label className="text-white" htmlFor={`question-${card.id}`}>
@@ -117,7 +117,7 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
               rows={5}
               id={`question-${card.id}`}
               placeholder="Question/Term"
-              className="w-11/12 p-5 my-1 text-lg bg-blue-200 resize-none"
+              className="w-11/12 p-5 my-1 ml-4 text-lg bg-blue-200 resize-none"
               value={card.question}
               draggable={false}
               onChange={(e) => handleChange(e, card.id, "question")}
@@ -129,18 +129,20 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
               rows={5}
               id={`answer-${card.id}`}
               placeholder="Answer/Definition"
-              className="w-11/12 p-5 my-1 text-lg bg-blue-200 resize-none"
+              className="w-11/12 p-5 my-1 ml-4 text-lg bg-blue-200 resize-none"
               value={card.answer}
               draggable={false}
               onChange={(e) => handleChange(e, card.id, "answer")}
             />
-            <button
-              type="button"
-              onClick={() => deleteCard(card.id)}
-              className="absolute font-julius text-xs right-0 bottom-0 m-2 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded"
-            >
-              Remove
-            </button>
+            {cards.length > 1 && (
+              <button
+                type="button"
+                onClick={() => deleteCard(card.id)}
+                className="absolute p-5 px-4 py-2 m-2 text-xl font-bold text-red-600 rounded -top-3 -left-4 font-julius hover:text-red-700"
+              >
+                X
+              </button>
+            )}
           </li>
         ))}
       </ul>

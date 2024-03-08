@@ -35,14 +35,14 @@ const ViewSet = ({ cards }: Props) => {
     : "";
 
   return (
-    <div className="bg-blue-200 flex flex-col items-center mt-24 relative">
+    <div className="relative flex flex-col items-center mt-24 bg-blue-200">
       {flipped && (
-        <p className="absolute left-2 -top-8 bg-blue-200 font-bold px-5">
+        <p className="absolute px-5 font-bold bg-blue-200 left-2 -top-8">
           Answer
         </p>
       )}
       <div
-        className={`overflow-y-auto text-xl p-2 text-center h-72 ${centerContentClass}`}
+        className={`overflow-y-auto text-xl p-2 text-center bg-blue-200 h-72 ${centerContentClass}`}
       >
         <p>
           {flipped
@@ -50,7 +50,7 @@ const ViewSet = ({ cards }: Props) => {
             : cards[currentIndex]?.question}
         </p>
       </div>
-      <div className="w-full flex justify-around items-center relative bg-googleBlue">
+      <div className="relative flex items-center justify-around w-full bg-googleBlue">
         <button className="text-4xl" onClick={handlePrev}>
           {"<"}
         </button>
@@ -62,7 +62,7 @@ const ViewSet = ({ cards }: Props) => {
         <button className="text-4xl" onClick={handleNext}>
           {">"}
         </button>
-        <p className="absolute -bottom-16 text-2xl">
+        <p className="absolute text-2xl -bottom-16">
           {currentIndex + 1}/{cards.length}
         </p>
       </div>
