@@ -8,6 +8,7 @@ describe("SingleCardSet", () => {
     title: "Test Title",
     description: "Test Description",
     cards: [],
+    quizzes: [],
   };
 
   it("renders without crashing", () => {

@@ -38,7 +38,10 @@ const AddSetForm: React.FC<AddSetFormProps> = ({ setDisplayModal }) => {
         />
       )}
       <SubmitButton isDisabled={title === "" || isDuplicate} />
-      <p className="absolute w-1/2 text-red-700 text-md bottom-5 right-10">
+      <p
+        className="absolute w-1/2 text-red-700 text-md bottom-5 right-10"
+        data-testid="errorElement"
+      >
         {errorMsg}
       </p>
     </form>
