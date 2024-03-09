@@ -3,51 +3,66 @@ import Card from "../../models/Card/Card";
 import { updateCardSetCards } from "../../services/cardApi";
 import AuthContext from "../../context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
+import { useParams } from "react-router-dom";
+import { useCardSet } from "../../hooks/useCardSet";
+import CardSet from "../../models/Card/CardSet";
 
 interface Props {
-  cards: Card[];
-  setCards: (c: Card[]) => void;
-  cardSetTitle: string;
   setIsEditing: (b: boolean) => void;
 }
 
-const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
+const EditSet = ({ setIsEditing }: Props) => {
   const { account, setAccount } = useContext(AuthContext);
+  const { cardsetid } = useParams<{ cardsetid: string }>();
+
+  const { activeSet, setActiveSet } = useCardSet(cardsetid ?? "");
 
   const [hasChanges, setHasChanges] = useState(false);
 
   const initialCardsRef = useRef<Card[]>([]);
 
+  if (!account || !activeSet) {
+    return <p>Account is loading!</p>;
+  }
+
   useEffect(() => {
-    initialCardsRef.current = JSON.parse(JSON.stringify(cards));
-    if (!cards.length) {
+    initialCardsRef.current = JSON.parse(JSON.stringify(activeSet.cards));
+    if (!activeSet.cards.length) {
       pushEmptyCard();
     }
   }, []);
 
   const haveCardsChanged = (): boolean => {
-    return JSON.stringify(cards) !== JSON.stringify(initialCardsRef.current);
+    return (
+      JSON.stringify(activeSet.cards) !==
+      JSON.stringify(initialCardsRef.current)
+    );
   };
 
   const isSaveDisabled = (): boolean => {
     return (
       !haveCardsChanged() ||
       !hasChanges ||
-      cards.some((card) => card.answer === "" || card.question === "")
+      activeSet.cards.some((card) => card.answer === "" || card.question === "")
     );
   };
 
   const deleteCard = (cardId: string) => {
     // Filter out the card to be deleted
-    const updatedCards = cards.filter((card) => card.id !== cardId);
-    setCards(updatedCards);
+    const updatedCards = activeSet.cards.filter((card) => card.id !== cardId);
+    const updatedCardSet: CardSet = { ...activeSet, cards: updatedCards };
+    setActiveSet(updatedCardSet);
     setHasChanges(true);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (account && account._id) {
-      const result = await updateCardSetCards(account._id, cardSetTitle, cards);
+      const result = await updateCardSetCards(
+        account._id,
+        activeSet.title,
+        activeSet.cards
+      );
       if (result) {
         setAccount(result);
         setIsEditing(false);
@@ -60,7 +75,7 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
     cardId: string,
     fieldType: "question" | "answer"
   ) => {
-    const updatedCards = cards.map((card) => {
+    const updatedCards = activeSet.cards.map((card) => {
       if (card.id === cardId) {
         const updatedCard = { ...card, [fieldType]: event.target.value };
         return updatedCard;
@@ -68,7 +83,8 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
       return card;
     });
     setHasChanges(true);
-    setCards(updatedCards);
+    const updatedCardSet: CardSet = { ...activeSet, cards: updatedCards };
+    setActiveSet(updatedCardSet);
   };
 
   const pushEmptyCard = () => {
@@ -80,11 +96,13 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
       successes: 0,
       failures: 0,
     };
-    setCards([...cards, newCard]);
+    const updatedCards = [...activeSet.cards, newCard];
+    const updatedCardSet: CardSet = { ...activeSet, cards: updatedCards };
+    setActiveSet(updatedCardSet);
   };
 
   useEffect(() => {
-    if (!cards.length) {
+    if (!activeSet.cards.length) {
       pushEmptyCard();
     }
   }, []);
@@ -102,12 +120,12 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
         Save Changes
       </button>
       <ul>
-        {cards.map((card, index) => (
+        {activeSet.cards.map((card, index) => (
           <li
             key={card.id}
             className="relative flex flex-col items-center pb-10 mb-5 bg-slate-600"
           >
-            <p className="absolute left-0 w-5 text-2xl text-center text-white -translate-y-1/2 top-1/2 md:translate-x-1/2 md:text-5xl">
+            <p className="absolute left-0 w-5 text-2xl text-center text-white -translate-y-1/2 top-56 md:translate-x-1/2 md:text-5xl">
               {index + 1}
             </p>
             <label className="text-white" htmlFor={`question-${card.id}`}>
@@ -134,7 +152,7 @@ const EditSet = ({ cards, setCards, cardSetTitle, setIsEditing }: Props) => {
               draggable={false}
               onChange={(e) => handleChange(e, card.id, "answer")}
             />
-            {cards.length > 1 && (
+            {activeSet.cards.length > 1 && (
               <button
                 type="button"
                 onClick={() => deleteCard(card.id)}

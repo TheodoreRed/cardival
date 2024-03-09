@@ -1,55 +1,28 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import CardSet from "../../models/Card/CardSet";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import EditSet from "./EditSet";
-import Card from "../../models/Card/Card";
 import EmptyCardDeckMsg from "./EmptyCardDeckMsg";
 import ViewSet from "./ViewSet";
 import Header from "../Common/Header/Header";
+import { navigateToCardSetQuizByTitle } from "../../utils/dashboardUtils";
+import { useCardSet } from "../../hooks/useCardSet";
 
 const Dashboard = () => {
   // https://chat.openai.com/c/64ff96d9-db18-4bc2-bc38-7b153255a0a8
-  const { cardsetid } = useParams();
 
   const { account } = useContext(AuthContext);
+  const { cardsetid } = useParams<{ cardsetid: string }>();
 
-  const [activeSet, setActiveSet] = useState<CardSet | null>(null);
-  const [cards, setCards] = useState<Card[]>(activeSet?.cards ?? []);
+  const { activeSet } = useCardSet(cardsetid ?? "");
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (account && cardsetid) {
-      const setActiveCardSetFromAccount = () => {
-        const foundSet = account.cardSets.find(
-          (set) => set.title === cardsetid
-        );
-        if (foundSet) setActiveSet(foundSet);
-      };
-
-      setActiveCardSetFromAccount();
-    }
-  }, [account, cardsetid]);
-
-  useEffect(() => {
-    if (activeSet) {
-      setCards(activeSet.cards);
-    }
-  }, [activeSet, isEditing]);
-
   const isCardDeckEmpty = (): boolean => {
-    if (!account || !cardsetid) {
-      return true;
-    }
-    const foundSet = account.cardSets.find((set) => set.title === cardsetid);
-    if (!foundSet) {
-      return true;
-    }
-
-    return foundSet.cards.length === 0;
+    return !activeSet || activeSet.cards.length === 0;
   };
 
-  if (!account || !activeSet || !cards) {
+  if (!account || !activeSet) {
     return <p>Account is loading!</p>;
   }
 
@@ -62,16 +35,9 @@ const Dashboard = () => {
       <div className="relative">
         {!isEditing && <GoToQuiz />}
         <ToggleEdit />
-        {isEditing && (
-          <EditSet
-            cards={cards}
-            setCards={setCards}
-            cardSetTitle={activeSet.title}
-            setIsEditing={setIsEditing}
-          />
-        )}
+        {isEditing && <EditSet setIsEditing={setIsEditing} />}
       </div>
-      {!isEditing && !isCardDeckEmpty() && <ViewSet cards={cards} />}
+      {!isEditing && !isCardDeckEmpty() && <ViewSet />}
       {!isEditing && isCardDeckEmpty() && <EmptyCardDeckMsg />}
     </div>
   );
@@ -93,16 +59,19 @@ const Dashboard = () => {
   }
 
   function GoToQuiz() {
+    const navigate = useNavigate();
     return (
-      <Link to={`/${cardsetid}/quiz`}>
-        <button
-          onClick={() => {}}
-          className={`absolute px-4 py-2 font-semibold text-black duration-300 ease-in-out rounded-lg shadow-lg text-l top-5 left-5 bg-green-500 hover:bg-green-400 hover:text-white hover:shadow-xl hover:-translate-y-1 font-julius`}
-          disabled={isQuizBtnDisabled()}
-        >
-          Quiz
-        </button>
-      </Link>
+      <button
+        onClick={() => {
+          if (activeSet?.title) {
+            navigateToCardSetQuizByTitle(navigate, activeSet.title);
+          }
+        }}
+        className={`absolute px-4 py-2 font-semibold text-black duration-300 ease-in-out rounded-lg shadow-lg text-l top-5 left-5 bg-green-500 hover:bg-green-400 hover:text-white hover:shadow-xl hover:-translate-y-1 font-julius`}
+        disabled={isQuizBtnDisabled()}
+      >
+        Quiz
+      </button>
     );
   }
 };

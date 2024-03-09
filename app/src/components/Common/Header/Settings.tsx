@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditSettings from "./EditSettings";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../../context/AuthContext";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import CardSet from "../../../models/Card/CardSet";
+import { useCardSet } from "../../../hooks/useCardSet";
 
 interface Props {
   setDisplayModal: (b: boolean) => void;
@@ -13,17 +12,8 @@ interface Props {
 const Settings = ({ setDisplayModal }: Props) => {
   const [edit, setEdit] = useState(false);
   const { cardsetid } = useParams();
-  const { account } = useContext(AuthContext);
-  const [activeSet, setActiveSet] = useState<CardSet | undefined>(undefined);
 
-  useEffect(() => {
-    if (account) {
-      const set = account.cardSets.find((set) => set.title === cardsetid);
-      if (set) {
-        setActiveSet(set);
-      }
-    }
-  }, [account, cardsetid]);
+  const { activeSet } = useCardSet(cardsetid ?? "");
 
   if (!activeSet) {
     return <p>Loading...</p>;

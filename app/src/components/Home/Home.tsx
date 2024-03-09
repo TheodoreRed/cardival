@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import { signInWithGoogle } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import { navigateToCardSets } from "../../utils/dashboardUtils";
 
 const Home = () => {
   const { account } = useContext(AuthContext);
@@ -9,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     if (account) {
-      navigate("/card-sets");
+      navigateToCardSets(navigate);
     }
   }, [account]);
 

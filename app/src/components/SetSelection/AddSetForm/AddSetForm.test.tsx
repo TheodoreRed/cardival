@@ -8,7 +8,7 @@ import { useState } from "react";
 const mockSubmitHandler = jest.fn();
 
 // Mock the useCardSetForm hook
-jest.mock("./useCardSetForm", () => ({
+jest.mock("../../../hooks/useCardSetForm", () => ({
   useCardSetForm: () => {
     const [mockTitle, setMockTitle] = useState("");
     const [isDuplicate, setIsDuplicate] = useState(false);

@@ -7,7 +7,7 @@
     "dev": "vite",
     "test": "jest",
     "test:verbose": "jest --verbose",
-    "test:coverage": "jest --coverage --collectCoverageFrom=\"src/components/SetSelection/AddSetForm.tsx\"",
+    "test:coverage": "jest --coverage --watchAll=false",
     "build": "tsc && vite build",
     "deploy": "tsc && vite build && firebase deploy --only hosting",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

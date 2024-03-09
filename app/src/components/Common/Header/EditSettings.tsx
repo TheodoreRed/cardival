@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import CardSet from "../../../models/Card/CardSet";
-import { useCardSetForm } from "../../SetSelection/AddSetForm/useCardSetForm";
+import { useCardSetForm } from "../../../hooks/useCardSetForm";
 
 interface Props {
   setDisplayModal: (b: boolean) => void;

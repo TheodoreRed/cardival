@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
-import AuthContext from "../../../context/AuthContext";
-import CardSet from "../../../models/Card/CardSet";
-import { createNewCardSet, replaceCardSet } from "../../../services/cardApi";
-import { getAccountByUid } from "../../../services/accountApi";
-import { navigateToCardSetByTitle } from "../../../utils/dashboardUtils";
+import AuthContext from "../context/AuthContext";
+import CardSet from "../models/Card/CardSet";
+import { createNewCardSet, replaceCardSet } from "../services/cardApi";
+import { getAccountByUid } from "../services/accountApi";
+import { navigateToCardSetByTitle } from "../utils/dashboardUtils";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
