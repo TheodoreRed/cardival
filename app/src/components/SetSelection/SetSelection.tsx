@@ -4,8 +4,8 @@ import Modal from "../Common/Modal";
 import AddSetForm from "./AddSetForm/AddSetForm";
 import SingleCardSet from "./SingleCardSet/SingleCardSet";
 import { Link } from "react-router-dom";
-import CardSet from "../../models/Card/CardSet";
 import FilterInput from "./FilterInput/FilterInput";
+import { filterByText } from "../../utils/filterByText";
 
 const SetSelection = () => {
   const [displayModal, setDisplayModal] = useState(false);
@@ -15,14 +15,6 @@ const SetSelection = () => {
   if (!account) {
     return <p>Loading...</p>; // loading spinner
   }
-
-  const filterByText = (sets: CardSet[]): CardSet[] => {
-    return [...sets].filter(
-      (s) =>
-        s.title.toLowerCase().includes(inputText.toLowerCase()) ||
-        s.description?.toLowerCase().includes(inputText.toLowerCase())
-    );
-  };
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-googleBlue font-julius">
@@ -43,7 +35,7 @@ const SetSelection = () => {
       <FilterInput inputText={inputText} setInputText={setInputText} />
 
       <ul className="w-5/6">
-        {filterByText(account.cardSets).map((cardSet) => {
+        {filterByText(account.cardSets, inputText).map((cardSet) => {
           return (
             <Link
               key={cardSet.title}
@@ -58,6 +50,7 @@ const SetSelection = () => {
       <button
         onClick={() => setDisplayModal(true)}
         className="px-10 py-5 my-10 text-4xl transition duration-300 ease-in-out transform rounded-lg shadow-lg w-fit bg-slate-200 hover:bg-slate-500 hover:text-white hover:shadow-xl"
+        data-testid="addSetBtn"
       >
         +
       </button>
