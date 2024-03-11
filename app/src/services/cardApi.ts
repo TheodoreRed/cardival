@@ -3,8 +3,9 @@ import Account from "../models/Account/Account";
 import CardSet from "../models/Card/CardSet";
 import Card from "../models/Card/Card";
 
-const baseUrl: string =
-  import.meta.env.VITE_APP_BASE_URL ?? "Some Error With .env.local";
+import { config } from "../config/config";
+
+const { apiUrl } = config;
 
 export const createNewCardSet = async (
   _id: string,
@@ -12,7 +13,7 @@ export const createNewCardSet = async (
 ): Promise<Account> => {
   return (
     await axios.post(
-      `${baseUrl}/accounts/${encodeURIComponent(_id)}/card-sets`,
+      `${apiUrl}/accounts/${encodeURIComponent(_id)}/card-sets`,
       cardSet
     )
   ).data;
@@ -25,7 +26,7 @@ export const replaceCardSet = async (
 ) => {
   try {
     const response = await axios.put(
-      `${baseUrl}/accounts/${encodeURIComponent(
+      `${apiUrl}/accounts/${encodeURIComponent(
         _id
       )}/card-sets/${encodeURIComponent(activeSetTitle)}/replace`,
       newSet
@@ -55,7 +56,7 @@ export const updateCardSetCards = async (
 ): Promise<Account | null> => {
   try {
     const response = await axios.patch(
-      `${baseUrl}/accounts/${encodeURIComponent(
+      `${apiUrl}/accounts/${encodeURIComponent(
         accountId
       )}/card-sets/${encodeURIComponent(cardSetId)}/cards`,
       { cards }

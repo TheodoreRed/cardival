@@ -5,7 +5,7 @@ import EditSet from "./EditSet";
 import EmptyCardDeckMsg from "./EmptyCardDeckMsg";
 import ViewSet from "./ViewSet";
 import Header from "../Common/Header/Header";
-import { navigateToCardSetQuizByTitle } from "../../utils/dashboardUtils";
+import { navigateToCardSetQuizByTitle } from "../../utils/navigateUtils";
 import { useCardSet } from "../../hooks/useCardSet";
 
 const Dashboard = () => {
@@ -33,8 +33,8 @@ const Dashboard = () => {
       <Header />
 
       <div className="relative">
-        {!isEditing && <GoToQuiz />}
-        <ToggleEdit />
+        {!isEditing && <GoToQuizBtn />}
+        <ToggleEditBtn />
         {isEditing && <EditSet setIsEditing={setIsEditing} />}
       </div>
       {!isEditing && !isCardDeckEmpty() && <ViewSet />}
@@ -42,7 +42,7 @@ const Dashboard = () => {
     </div>
   );
 
-  function ToggleEdit() {
+  function ToggleEditBtn() {
     return (
       <button
         onClick={() => {
@@ -58,7 +58,7 @@ const Dashboard = () => {
     );
   }
 
-  function GoToQuiz() {
+  function GoToQuizBtn() {
     const navigate = useNavigate();
     return (
       <button

@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import AuthContext from "../../context/AuthContext";
 import { signInWithGoogle } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { navigateToCardSets } from "../../utils/dashboardUtils";
+import { navigateToCardSets } from "../../utils/navigateUtils";
 
 const Home = () => {
   const { account } = useContext(AuthContext);

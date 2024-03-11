@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   navigateToCardSetByTitle,
   navigateToCardSets,
-} from "../../../utils/dashboardUtils";
+} from "../../../utils/navigateUtils";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Modal from "../Modal";

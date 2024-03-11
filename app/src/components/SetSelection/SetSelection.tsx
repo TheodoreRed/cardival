@@ -33,6 +33,7 @@ const SetSelection = () => {
         <span
           onClick={() => setDisplayModal(true)}
           className="text-blue-600 duration-300 ease-in-out cursor-pointer hover:text-blue-400"
+          data-testid="addSetSpanBtn"
         >
           Add
         </span>{" "}

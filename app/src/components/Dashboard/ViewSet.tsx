@@ -13,7 +13,7 @@ const ViewSet = () => {
   const [flipped, setFlipped] = useState(false);
   const { cardsetid } = useParams<{ cardsetid: string }>();
 
-  const { activeSet, setActiveSet } = useCardSet(cardsetid ?? "");
+  const { activeSet } = useCardSet(cardsetid ?? "");
 
   if (!activeSet) {
     return <p>Account is loading!</p>;

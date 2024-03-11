@@ -101,12 +101,6 @@ const EditSet = ({ setIsEditing }: Props) => {
     setActiveSet(updatedCardSet);
   };
 
-  useEffect(() => {
-    if (!activeSet.cards.length) {
-      pushEmptyCard();
-    }
-  }, []);
-
   return (
     <form onSubmit={handleSubmit} className="pt-24">
       <button

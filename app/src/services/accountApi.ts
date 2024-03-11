@@ -1,12 +1,12 @@
 import axios from "axios";
 import Account from "../models/Account/Account";
 
-const baseUrl: string =
-  import.meta.env.VITE_APP_BASE_URL ?? "Some Error With .env.local";
+import { config } from "../config/config";
 
+const { apiUrl } = config;
 export const getAccountByUid = async (uid: string): Promise<Account | void> => {
   try {
-    return (await axios.get(`${baseUrl}/accounts/${encodeURIComponent(uid)}`))
+    return (await axios.get(`${apiUrl}/accounts/${encodeURIComponent(uid)}`))
       .data;
   } catch (err) {
     console.log("Error", err);
@@ -14,5 +14,5 @@ export const getAccountByUid = async (uid: string): Promise<Account | void> => {
 };
 
 export const createNewAccount = async (account: Account): Promise<Account> => {
-  return (await axios.post(`${baseUrl}/accounts`, account)).data;
+  return (await axios.post(`${apiUrl}/accounts`, account)).data;
 };
