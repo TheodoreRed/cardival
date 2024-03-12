@@ -12,7 +12,7 @@ const Quiz = () => {
   const { activeSet } = useCardSet(cardsetid ?? "");
 
   useEffect(() => {
-    if (cardsetid && (!activeSet || activeSet.cards.length >= 5)) {
+    if (cardsetid && (!activeSet || activeSet.cards.length < 5)) {
       navigateToCardSetByTitle(navigate, cardsetid);
     }
   }, [account]);

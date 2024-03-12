@@ -48,7 +48,6 @@ const EditSet = ({ setIsEditing }: Props) => {
   };
 
   const deleteCard = (cardId: string) => {
-    // Filter out the card to be deleted
     const updatedCards = activeSet.cards.filter((card) => card.id !== cardId);
     const updatedCardSet: CardSet = { ...activeSet, cards: updatedCards };
     setActiveSet(updatedCardSet);

@@ -15,7 +15,10 @@ const Home = () => {
   }, [account]);
 
   return (
-    <div className="h-screen overflow-hidden bg-center bg-no-repeat bg-cover bg-mobile-landing md:bg-desktop-landing">
+    <div
+      className="h-screen overflow-hidden bg-center bg-no-repeat bg-cover bg-mobile-landing md:bg-desktop-landing"
+      data-testid="testHome"
+    >
       <h1 className="p-5 text-center text-black text-7xl font-julius">
         Cardival
       </h1>
@@ -28,6 +31,7 @@ const Home = () => {
           <span
             className="inline-block px-4 py-2 text-white transition-transform duration-300 ease-in-out border border-gray-300 rounded-full shadow-lg cursor-pointer bg-googleBlue hover:scale-105"
             onClick={signInWithGoogle}
+            data-testid="googleSignInButton"
           >
             Google
           </span>

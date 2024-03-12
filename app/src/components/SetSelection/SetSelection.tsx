@@ -13,7 +13,7 @@ const SetSelection = () => {
   const { account } = useContext(AuthContext);
 
   if (!account) {
-    return <p>Loading...</p>; // loading spinner
+    return <p data-testid="loadElementSetSelection">Loading...</p>; // loading spinner
   }
 
   return (

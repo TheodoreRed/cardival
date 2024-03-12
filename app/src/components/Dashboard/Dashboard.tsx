@@ -3,19 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import EditSet from "./EditSet";
 import EmptyCardDeckMsg from "./EmptyCardDeckMsg";
-import ViewSet from "./ViewSet";
+import ViewSet from "./ViewSet/ViewSet";
 import Header from "../Common/Header/Header";
 import { navigateToCardSetQuizByTitle } from "../../utils/navigateUtils";
 import { useCardSet } from "../../hooks/useCardSet";
 
 const Dashboard = () => {
-  // https://chat.openai.com/c/64ff96d9-db18-4bc2-bc38-7b153255a0a8
-
   const { account } = useContext(AuthContext);
   const { cardsetid } = useParams<{ cardsetid: string }>();
-
   const { activeSet } = useCardSet(cardsetid ?? "");
-
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const isCardDeckEmpty = (): boolean => {

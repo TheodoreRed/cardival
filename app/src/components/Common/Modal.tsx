@@ -19,6 +19,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         <button
           className="absolute px-4 py-2 text-white duration-300 rounded-md hover:bg-red-600 bottom-3 left-3 bg-red-950"
           onClick={onClose}
+          data-testid="modalCloseBtn"
         >
           Close
         </button>

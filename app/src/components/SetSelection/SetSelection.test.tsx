@@ -53,4 +53,31 @@ describe("SetSelection Component", () => {
       expect(screen.getByTestId("testModal")).toBeInTheDocument()
     );
   });
+
+  it("should close the modal when the close button is clicked", async () => {
+    fireEvent.click(screen.getByTestId("addSetBtn"));
+    fireEvent.click(screen.getByTestId("modalCloseBtn"));
+
+    await waitFor(() =>
+      expect(screen.queryByTestId("testModal")).not.toBeInTheDocument()
+    );
+  });
+
+  it("should return a loading element when account is null", async () => {
+    render(
+      <Router>
+        <AuthContext.Provider
+          value={{
+            account: null,
+            setAccount: mockSetAccount,
+            user: mockUser as User,
+          }}
+        >
+          <SetSelection />
+        </AuthContext.Provider>
+      </Router>
+    );
+
+    expect(screen.getByTestId("loadElementSetSelection")).toBeInTheDocument();
+  });
 });

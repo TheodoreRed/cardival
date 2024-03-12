@@ -1,8 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { config } from "./config/config";
+
+const { apiKey } = config;
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey,
   authDomain: "cardival-a7276.firebaseapp.com",
   projectId: "cardival-a7276",
   storageBucket: "cardival-a7276.appspot.com",
