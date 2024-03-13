@@ -7,6 +7,7 @@
     "dev": "vite",
     "test": "jest",
     "test:verbose": "jest --verbose",
+    "test:detect": "jest --detectOpenHandles",
     "test:coverage": "jest --coverage --watchAll=false",
     "build": "tsc && vite build",
     "deploy": "tsc && vite build && firebase deploy --only hosting",

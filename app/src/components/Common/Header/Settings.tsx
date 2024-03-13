@@ -27,7 +27,7 @@ const Settings = ({ setDisplayModal }: Props) => {
         onClick={() => setEdit((prev) => !prev)}
       />
       {edit ? (
-        <EditSettings setDisplayModal={setDisplayModal} activeSet={activeSet} />
+        <EditSettings setDisplayModal={setDisplayModal} />
       ) : (
         <div className="flex flex-col items-center py-5 mt-3 h-fit">
           <div>

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import CardSet from "../../../models/Card/CardSet";
 import { useCardSetForm } from "../../../hooks/useCardSetForm";
+import { useCardSet } from "../../../hooks/useCardSet";
+import { useParams } from "react-router-dom";
 
 interface Props {
   setDisplayModal: (b: boolean) => void;
-  activeSet: CardSet;
 }
 
-const EditSettings: React.FC<Props> = ({ setDisplayModal, activeSet }) => {
+const EditSettings: React.FC<Props> = ({ setDisplayModal }) => {
   const {
     title,
     setTitle,
@@ -18,6 +18,13 @@ const EditSettings: React.FC<Props> = ({ setDisplayModal, activeSet }) => {
     checkForDuplicateTitle,
     submitHandler,
   } = useCardSetForm({ setDisplayModal });
+  const { cardsetid } = useParams();
+
+  const { activeSet } = useCardSet(cardsetid ?? "");
+
+  if (!activeSet) {
+    return <p data-testid="editSettingsLoading">Loading...</p>;
+  }
 
   useEffect(() => {
     setTitle(activeSet.title);
@@ -32,6 +39,7 @@ const EditSettings: React.FC<Props> = ({ setDisplayModal, activeSet }) => {
       <div className="flex flex-col w-5/6 items-left">
         <label>Set Title:</label>
         <input
+          data-testid="editSetTitleInput"
           type="text"
           value={title}
           onChange={(e) => {
@@ -45,6 +53,7 @@ const EditSettings: React.FC<Props> = ({ setDisplayModal, activeSet }) => {
       <div className="flex flex-col w-5/6 items-left">
         <label>Set Description:</label>
         <textarea
+          data-testid="editSetDescriptionInput"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="resize-none "
