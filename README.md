@@ -23,25 +23,18 @@ git clone https://github.com/TheodoreRed/cardival.git
 
 The project consists of two main parts: the frontend application (`app`) and the backend server (`server/functions`). To set up both environments, you will need to install dependencies in each directory.
 
-1. **Navigate to the Frontend Directory** and install dependencies:
+1. **Install dependencies**:
 
    ```sh
-   cd cardival/app
-   npm install
-   ```
-
-2. **Navigate to the Backend Server Directory** and install dependencies:
-
-   ```sh
-   cd ../server/functions
-   npm install
+   npm run setup
    ```
 
 ### Running the Project
 
 Back at the root of the project, you can use the following npm scripts defined in `package.json` for development:
 
-- **`npm run dev`**: Concurrently starts both the frontend development server and the backend server for local development.
+- **`npm run setup`**: Concurrently installs both the app and server dependencies.
+- **`npm run dev`**: Concurrently starts both the frontend development app and the backend server for local development.
 - **`npm run dev:watch`**: Similar to `npm run dev`, but with watch mode enabled for both frontend and backend, allowing live reloading on changes.
 - **`npm run test`**: Concurrently runs tests for both frontend and backend.
 
