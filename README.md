@@ -26,6 +26,7 @@ The project consists of two main parts: the frontend application (`app`) and the
 1. **Install dependencies**:
 
    ```sh
+   npm install
    npm run setup
    ```
 

@@ -35,6 +35,7 @@ const EditSettings: React.FC<Props> = ({ setDisplayModal }) => {
     <form
       className="flex flex-col items-center py-5 mt-3 h-36"
       onSubmit={(e) => submitHandler(e, activeSet)}
+      data-testid="editSettingsForm"
     >
       <div className="flex flex-col w-5/6 items-left">
         <label>Set Title:</label>

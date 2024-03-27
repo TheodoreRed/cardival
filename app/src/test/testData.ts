@@ -9,6 +9,7 @@ export const mockUser = {
   email: "john.doe@example.com",
   photoURL: "https://example.com/photo.jpg",
 } as Partial<User>;
+
 export const mockCards: Card[] = [
   {
     id: "card1",

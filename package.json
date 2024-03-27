@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "setup": "concurrently \"npm install\" \"cd app && npm install\" \"cd server/functions && npm install\"",
+    "setup": "concurrently \"cd app && npm install\" \"cd server/functions && npm install\"",
     "dev": "concurrently \"cd app && npm run dev\" \"cd server/functions && npm run serve\"",
     "dev:watch": "concurrently \"cd app && npm run dev\" \"cd server/functions && npm run serve:dev\"",
     "test": "concurrently \"cd app && npm test\" \" cd server/functions && npm test\""
